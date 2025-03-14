@@ -10,6 +10,6 @@ export default class Project {
     }
 
     removeItem(item) {
-        this.#list = this.#list.filter((i) => {item !== i});
+        this.#list = this.#list.filter((i) => {item.id !== i.id});
     }
 }

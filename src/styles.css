@@ -1,17 +1,41 @@
+html, body {
+    height: 100%;
+}
+
 body {
+    display: flex;
+    flex-direction: column;
+}
+
+body, h1, ul {
     margin: 0;
 }
 
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar, .main-container, .main-footer {
+    padding: 50px;
+}
+
+header {
+    background-color: darkcyan;
+    padding: 25px 50px;
+}
+
 div#content {
+    flex: 1;
     display: grid;
-    grid-template-columns: 1fr 4fr;
+    grid-template-columns: 1fr 3fr;
 }
 
 .sidebar {
+    box-sizing: border-box;
     background-color: cadetblue;
     display: flex;
     flex-direction: column;
-    height: 100vh;
 }
 
 .main {
@@ -25,5 +49,4 @@ div#content {
 
 .main-footer {
     background-color: darkcyan;
-    padding: 50px;
 }
