@@ -1,7 +1,9 @@
 export default class Project {
     #list = [];
 
-    constructor() {}
+    constructor(name) {
+        this.name = name;
+    }
 
     addItem(item) {
         this.#list.push(item);

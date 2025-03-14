@@ -1,0 +1,29 @@
+body {
+    margin: 0;
+}
+
+div#content {
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+}
+
+.sidebar {
+    background-color: cadetblue;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.main {
+    display: flex;
+    flex-direction: column;
+}
+
+.main-container {
+    flex: 1;
+}
+
+.main-footer {
+    background-color: darkcyan;
+    padding: 50px;
+}
