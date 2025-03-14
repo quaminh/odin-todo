@@ -36,6 +36,7 @@ div#content {
     background-color: cadetblue;
     display: flex;
     flex-direction: column;
+    gap: 25px;
 }
 
 .main {

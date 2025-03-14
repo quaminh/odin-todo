@@ -5,6 +5,10 @@ export default class Project {
         this.name = name;
     }
 
+    get list() {
+        return this.#list;
+    }
+
     addItem(item) {
         this.#list.push(item);
     }
