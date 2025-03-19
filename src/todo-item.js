@@ -1,7 +1,4 @@
 export default class TodoItem {
-    static #idCounter = 0;
-
-    #id = TodoItem.#idCounter++;
     #completed = false;
 
     constructor(title, description, dueDate, priority) {
@@ -9,10 +6,6 @@ export default class TodoItem {
         this.description = description;
         this.dueDate = dueDate;
         this.priority = priority;
-    }
-
-    get id() {
-        return this.#id;
     }
 
     isCompleted() {

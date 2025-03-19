@@ -39,7 +39,7 @@ export default function Controller() {
             projectList.appendChild(projectListItem);
         });
 
-        currentProject.list.forEach((item) => {
+        currentProject.list.forEach((item, index) => {
             const itemCard = document.createElement("div");
             const itemTitle = document.createElement("h3");
             const itemCheckbox = document.createElement("input");
@@ -48,6 +48,7 @@ export default function Controller() {
             const dropdownButton = document.createElement("button");
 
             itemCard.classList.add("item-card");
+            itemCard.dataset.index = index;
             deleteButton.classList.add("delete-btn");
             dropdownButton.classList.add("dropdown-btn");
 
@@ -85,6 +86,13 @@ export default function Controller() {
         currentProject = projects[e.target.dataset.index];
 
         updateScreen();
+    });
+
+    itemList.addEventListener("click", (e) => {
+        if (e.target.classList.contains("delete-btn")) {
+            currentProject.removeItem(e.target.parentElement.dataset.index);
+            updateScreen();
+        }
     });
 
     priorityInput.addEventListener("click", (e) => {

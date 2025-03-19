@@ -20,7 +20,7 @@ export default class Project {
         this.sort();
     }
 
-    removeItem(item) {
-        this.#list = this.#list.filter((i) => {item.id !== i.id});
+    removeItem(index) {
+        this.#list.splice(index, 1);
     }
 }
