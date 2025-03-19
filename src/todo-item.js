@@ -1,6 +1,6 @@
 export default class TodoItem {
     static #idCounter = 0;
-    
+
     #id = TodoItem.#idCounter++;
     #completed = false;
 
@@ -13,6 +13,10 @@ export default class TodoItem {
 
     get id() {
         return this.#id;
+    }
+
+    isCompleted() {
+        return this.#completed;
     }
 
     toggleCompleted() {
