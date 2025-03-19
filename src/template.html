@@ -22,15 +22,33 @@
                 <ul id="item-list"></ul>
             </div>
             <div class="main-footer">
-                <h2>New Item</h2>
-                <form>
-                    <input type="text">
-                    <input type="text">
-                    <input type="date">
-                    <input type="radio">
-                    <input type="radio">
-                    <input type="radio">
-                    <button>Add</button>
+                <h2>Add New Item</h2>
+                <form id="item-form">
+                    <div class="form-section">
+                        <div>
+                            <label for="title-input">Title</label>
+                            <input id="title-input" type="text" placeholder="Title">
+                        </div>
+                        <div>
+                            <label for="desc-input">Description</label>
+                            <textarea id="desc-input" placeholder="Description"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-section">
+                        <div>
+                            <label for="date-input">Due Date</label>
+                            <input id="date-input" type="date">
+                        </div>
+                        <div>
+                            <label>Priority</label>
+                            <div class="priority-btn-container">
+                                <button class="priority-btn selected" id="priority-low" type="button">LOW</button>
+                                <button class="priority-btn" id="priority-med" type="button">MED</button>
+                                <button class="priority-btn" id="priority-high" type="button">HIGH</button>
+                            </div>
+                        </div>
+                    </div>
+                    <button id="item-submit" type="submit">Add</button>
                 </form>
             </div>
         </div>

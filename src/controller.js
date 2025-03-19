@@ -14,6 +14,14 @@ export default function Controller() {
     const projectList = document.querySelector("#project-list");
     const itemList = document.querySelector("#item-list");
 
+    const itemForm = document.querySelector("#item-form");
+    const titleInput = document.querySelector("#title-input");
+    const descriptionInput = document.querySelector("#desc-input");
+    const dateInput = document.querySelector("#date-input");
+    const priorityInput = document.querySelector("div.priority-btn-container");
+    const priorityButtons = document.querySelectorAll(".priority-btn");
+    let currentPriority = "LOW";
+
     const updateScreen = () => {
         projectList.innerText = "";
         itemList.innerText = "";
@@ -42,6 +50,12 @@ export default function Controller() {
             itemCard.classList.add("item-card");
             deleteButton.classList.add("delete-btn");
             dropdownButton.classList.add("dropdown-btn");
+
+            let prio = "";
+            if (item.priority === 1) prio = "high";
+            if (item.priority === 2) prio = "med";
+            if (item.priority === 3) prio = "low";
+            itemCard.classList.add(`${prio}-priority`);
 
             itemCheckbox.type = "checkbox";
 
@@ -73,19 +87,44 @@ export default function Controller() {
         updateScreen();
     });
 
-    generalProject.addItem(new TodoItem("Item1", "", "", ""));
-    generalProject.addItem(new TodoItem("Item2", "", "", ""));
-    generalProject.addItem(new TodoItem("Item3", "", "", ""));
-    generalProject.addItem(new TodoItem("Item4", "", "", ""));
+    priorityInput.addEventListener("click", (e) => {
+        if (e.target.classList.contains("priority-btn")) {
+            priorityButtons.forEach((button) => button.classList.remove("selected"));
+            e.target.classList.add("selected");
+            currentPriority = e.target.innerText;
+        }
+    });
 
-    projects[0].addItem(new TodoItem("Item1", "", "", ""));
+    itemForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        if (!titleInput.value) {
+            alert("Title cannot be empty");
+        }
+        else {
+            const title = titleInput.value;
+            const description = descriptionInput.value;
+            const date = dateInput.value;
+            let prio = 3;
+            if (currentPriority === "MED") prio = 2;
+            if (currentPriority === "HIGH") prio = 1;
+            currentProject.addItem(new TodoItem(title, description, date, prio));
+            updateScreen();
+        }
+    });
 
-    projects[1].addItem(new TodoItem("Item1", "", "", ""));
-    projects[1].addItem(new TodoItem("Item2", "", "", ""));
+    generalProject.addItem(new TodoItem("Item1", "", "", 1));
+    generalProject.addItem(new TodoItem("Item2", "", "", 2));
+    generalProject.addItem(new TodoItem("Item3", "", "", 3));
+    generalProject.addItem(new TodoItem("Item4", "", "", 3));
 
-    projects[2].addItem(new TodoItem("Item1", "", "", ""));
-    projects[2].addItem(new TodoItem("Item2", "", "", ""));
-    projects[2].addItem(new TodoItem("Item3", "", "", ""));
+    projects[0].addItem(new TodoItem("Item1", "", "", 3));
+
+    projects[1].addItem(new TodoItem("Item1", "", "", 3));
+    projects[1].addItem(new TodoItem("Item2", "", "", 3));
+
+    projects[2].addItem(new TodoItem("Item1", "", "", 3));
+    projects[2].addItem(new TodoItem("Item2", "", "", 3));
+    projects[2].addItem(new TodoItem("Item3", "", "", 3));
 
     updateScreen();
 }

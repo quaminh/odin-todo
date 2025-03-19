@@ -9,8 +9,15 @@ export default class Project {
         return this.#list;
     }
 
+    sort() {
+        this.#list.sort((a, b) => {
+            return a.priority - b.priority;
+        });
+    }
+
     addItem(item) {
         this.#list.push(item);
+        this.sort();
     }
 
     removeItem(item) {
