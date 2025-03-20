@@ -1,3 +1,9 @@
+:root {
+    --high-priority-color: rgba(68, 0, 255, 1);
+    --med-priority-color: rgba(68, 0, 255, .5);
+    --low-priority-color: rgba(68, 0, 255, .2);
+}
+
 html, body {
     height: 100%;
 }
@@ -53,10 +59,16 @@ div#content {
 }
 
 .main-container {
-    flex: 1;
+    flex-grow: 1;
     display: flex;
     flex-direction: column;
     gap: 25px;
+    height: calc(100vh - 600px);
+}
+
+.main-header {
+    display: flex;
+    justify-content: space-between;
 }
 
 .main-footer {
@@ -65,6 +77,83 @@ div#content {
     display: flex;
     flex-direction: column;
     gap: 25px;
+}
+
+.footer-header {
+    display: flex;
+    justify-content: space-between;
+}
+
+#collapse-footer {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 5px;
+    padding: 0px 10px;
+}
+#collapse-footer:hover {
+    background-color: rgba(255, 255, 255, .25);
+}
+
+.hide {
+    display: none;
+}
+
+/* DIALOG STYLES */
+
+dialog {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 5px 5px darkcyan;
+}
+
+dialog div {
+    padding: 10px 25px;
+}
+
+dialog input {
+    box-sizing: border-box;
+    font-size: 1.5rem;
+    padding: 5px;
+    border: 2px solid darkcyan;
+    border-radius: 5px;
+}
+
+dialog button {
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.dialog-input-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.dialog-button-container {
+    display: flex;
+    gap: 20px;
+}
+
+#create-project-btn {
+    background-color: darkcyan;
+    color: white;
+}
+#create-project-btn:hover {
+    background-color: rgb(0, 175, 175);
+}
+
+#cancel-project-btn {
+    background-color: rgb(241, 241, 241);
+}
+#cancel-project-btn:hover {
+    background-color: lightgray;
 }
 
 /* FORM STYLES */
@@ -108,15 +197,20 @@ form .priority-btn-container {
 }
 
 form .priority-btn {
+    color: white;
     font-size: 1rem;
     padding: 10px;
     background: none;
-    border: 2px solid black;
+    border: 2px solid white;
     border-radius: 5px;
     cursor: pointer;
 }
-form .selected {
+form .priority-btn:hover {
+    background-color: rgba(255, 255, 255, .25);
+}
+form .priority-btn.selected {
     background-color: white;
+    color: black;
 }
 
 #item-submit {
@@ -146,8 +240,8 @@ form .selected {
 .project-btn:hover {
     background-color: rgb(110, 184, 187);
 }
-.project-btn:active {
-    background-color: cadetblue;
+.project-btn.selected {
+    background-color: rgb(110, 184, 187);
 }
 
 #new-project-btn {
@@ -168,7 +262,6 @@ form .selected {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    height: 500px;
     overflow-y: auto;
     padding-right: 10px;
 }
@@ -178,22 +271,41 @@ form .selected {
     border: 1px black solid;
     border-radius: 3px;
     display: flex;
+    align-items: center;
     gap: 20px;
 }
+.item-card:hover {
+    background-color: aliceblue;
+}
 .high-priority {
-    border: 2px rgb(0, 60, 255) solid;
+    border: 2px var(--high-priority-color) solid;
 }
 .med-priority {
-    border: 2px rgb(126, 156, 255) solid;
+    border: 2px var(--med-priority-color) solid;
 }
 .low-priority {
-    border: 2px rgb(192, 207, 255) solid;
+    border: 2px var(--low-priority-color) solid;
 }
 .completed {
     border: 2px black solid;
 }
 
-.delete-btn {
+.due-date {
     margin-left: auto;
-    font-size: 1rem;
+}
+
+.delete-btn, .dropdown-btn {
+    font-size: 1.2rem;
+    font-weight: bold;
+    background: none;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.delete-btn {
+    color: red;
+}
+.delete-btn:hover {
+    background-color: rgb(236, 178, 178);
 }

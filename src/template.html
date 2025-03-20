@@ -12,18 +12,24 @@
     <div id="content">
         <div class="sidebar">
             <button id="new-project-btn">New Project</button>
-            <button id="general-project-btn" class="project-btn">General</button>
+            <button id="general-project-btn" class="project-btn selected">General</button>
             <h2># Your Projects</h2>
             <ul id="project-list"></ul>
         </div>
         <div class="main">
             <div class="main-container">
-                <h2 id="list-title"></h2>
+                <div class="main-header">
+                    <h2 id="list-title"></h2>
+                    <button id="delete-project-btn" class="hide">Delete Project</button>
+                </div>
                 <ul id="item-list"></ul>
             </div>
             <div class="main-footer">
-                <h2>Add New Item</h2>
-                <form id="item-form">
+                <div class="footer-header">
+                    <h2>Add New Item</h2>
+                    <button id="collapse-footer">^</button>
+                </div>
+                <form id="item-form" class="hide">
                     <div class="form-section">
                         <div>
                             <label for="title-input">Title</label>
@@ -52,6 +58,16 @@
                 </form>
             </div>
         </div>
+        <dialog>
+            <div class="dialog-input-container">
+                <label for="project-name-input">Enter your project name</label>
+                <input id="project-name-input" type="text" placeholder="Project Name">
+            </div>
+            <div class="dialog-button-container">
+                <button id="create-project-btn">Create</button>
+                <button id="cancel-project-btn">Cancel</button>
+            </div>
+        </dialog>
     </div>
 </body>
 </html>

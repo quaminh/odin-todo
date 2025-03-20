@@ -13,6 +13,14 @@ export default function Controller() {
     const listTitle = document.querySelector("#list-title");
     const projectList = document.querySelector("#project-list");
     const itemList = document.querySelector("#item-list");
+    const collapseFooterButton = document.querySelector("#collapse-footer");
+    const deleteProjectButton = document.querySelector("#delete-project-btn");
+
+    const newProjectButton = document.querySelector("#new-project-btn");
+    const projectDialog = document.querySelector("dialog");
+    const projectNameInput = document.querySelector("#project-name-input");
+    const createProjectButton = document.querySelector("#create-project-btn");
+    const cancelProjectButton = document.querySelector("#cancel-project-btn");
 
     const itemForm = document.querySelector("#item-form");
     const titleInput = document.querySelector("#title-input");
@@ -26,11 +34,23 @@ export default function Controller() {
         projectList.innerText = "";
         itemList.innerText = "";
 
+        if (currentProject === generalProject) {
+            generalProjectButton.classList.add("selected");
+            deleteProjectButton.classList.add("hide");
+        }
+        else {
+            generalProjectButton.classList.remove("selected");
+            deleteProjectButton.classList.remove("hide");
+        }
+
         projects.forEach((project, index) => {
             const projectButton = document.createElement("button");
             const projectListItem = document.createElement("li");
 
             projectButton.classList.add("project-btn");
+            if (project === currentProject) {
+                projectButton.classList.add("selected");
+            }
 
             projectButton.innerText = project.name;
             projectButton.dataset.index = index;
@@ -39,9 +59,13 @@ export default function Controller() {
             projectList.appendChild(projectListItem);
         });
 
+        listTitle.innerText = currentProject.name;
+        if (currentProject.list.length === 0) itemList.innerText = "No items yet... Add some below!";
+
         currentProject.list.forEach((item, index) => {
             const itemCard = document.createElement("div");
             const itemTitle = document.createElement("h3");
+            const itemDueDate = document.createElement("p");
             const itemCheckbox = document.createElement("input");
             const listItem = document.createElement("li");
             const deleteButton = document.createElement("button");
@@ -49,6 +73,7 @@ export default function Controller() {
 
             itemCard.classList.add("item-card");
             itemCard.dataset.index = index;
+            itemDueDate.classList.add("due-date");
             deleteButton.classList.add("delete-btn");
             dropdownButton.classList.add("dropdown-btn");
 
@@ -60,13 +85,14 @@ export default function Controller() {
 
             itemCheckbox.type = "checkbox";
 
-            listTitle.innerText = currentProject.name;
             itemTitle.innerText = item.title;
+            itemDueDate.innerText = item.dueDate;
             deleteButton.innerText = "X";
             dropdownButton.innerText = "V"
 
             itemCard.appendChild(itemCheckbox);
             itemCard.appendChild(itemTitle);
+            itemCard.appendChild(itemDueDate);
             itemCard.appendChild(deleteButton);
             itemCard.appendChild(dropdownButton);
             listItem.appendChild(itemCard);
@@ -74,7 +100,39 @@ export default function Controller() {
         });
     };
 
-    generalProjectButton.addEventListener("click", () => {
+    newProjectButton.addEventListener("click", (e) => {
+        projectDialog.showModal();
+    });
+
+    createProjectButton.addEventListener("click", (e) => {
+        if (projectNameInput.value) {
+            projects.push(new Project(projectNameInput.value));
+            currentProject = projects[projects.length-1];
+            updateScreen();
+            projectDialog.close();
+        }
+        else {
+            alert("Project name cannot be empty");
+        }
+    });
+
+    cancelProjectButton.addEventListener("click", (e) => {
+       projectDialog.close(); 
+    });
+
+    deleteProjectButton.addEventListener("click", (e) => {
+        if (currentProject !== generalProject) {
+            projects.splice(projects.indexOf(currentProject), 1);
+            currentProject = generalProject;
+            updateScreen();
+        }
+    });
+
+    collapseFooterButton.addEventListener("click", (e) => {
+        itemForm.classList.toggle("hide");
+    });
+
+    generalProjectButton.addEventListener("click", (e) => {
         currentProject = generalProject;
 
         updateScreen();
