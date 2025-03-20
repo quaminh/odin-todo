@@ -11,6 +11,7 @@ export default class Project {
 
     sort() {
         this.#list.sort((a, b) => {
+            if (a.isCompleted()) return 1;
             return a.priority - b.priority;
         });
     }

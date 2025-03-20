@@ -98,10 +98,6 @@ div#content {
     background-color: rgba(255, 255, 255, .25);
 }
 
-.hide {
-    display: none;
-}
-
 /* DIALOG STYLES */
 
 dialog {
@@ -266,16 +262,28 @@ form .priority-btn.selected {
     padding-right: 10px;
 }
 
-.item-card {
+.item-display, .item-panel {
     padding: 15px;
-    border: 1px black solid;
-    border-radius: 3px;
+}
+
+.item-display {
     display: flex;
     align-items: center;
     gap: 20px;
 }
-.item-card:hover {
+
+.item-panel {
     background-color: aliceblue;
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+}
+
+.item-panel p:last-child {
+    justify-self: right;
+}
+
+.item-card {
+    border-radius: 3px;
 }
 .high-priority {
     border: 2px var(--high-priority-color) solid;
@@ -308,4 +316,14 @@ form .priority-btn.selected {
 }
 .delete-btn:hover {
     background-color: rgb(236, 178, 178);
+}
+
+.dropdown-btn:hover {
+    background-color: aliceblue;
+}
+
+/* HIDE STYLE */
+
+.hide {
+    display: none;
 }

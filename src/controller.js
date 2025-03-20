@@ -64,14 +64,20 @@ export default function Controller() {
 
         currentProject.list.forEach((item, index) => {
             const itemCard = document.createElement("div");
+            const itemDisplay = document.createElement("div");
             const itemTitle = document.createElement("h3");
             const itemDueDate = document.createElement("p");
             const itemCheckbox = document.createElement("input");
             const listItem = document.createElement("li");
             const deleteButton = document.createElement("button");
             const dropdownButton = document.createElement("button");
+            const itemPanel = document.createElement("div");
+            const itemDescription = document.createElement("p");
+            const itemPriority = document.createElement("p");
 
             itemCard.classList.add("item-card");
+            itemDisplay.classList.add("item-display");
+            itemPanel.classList.add("item-panel", "hide");
             itemCard.dataset.index = index;
             itemDueDate.classList.add("due-date");
             deleteButton.classList.add("delete-btn");
@@ -88,13 +94,19 @@ export default function Controller() {
             itemTitle.innerText = item.title;
             itemDueDate.innerText = item.dueDate;
             deleteButton.innerText = "X";
-            dropdownButton.innerText = "V"
+            dropdownButton.innerText = "V";
+            itemDescription.innerText = (item.description) ? item.description : "No description";
+            itemPriority.innerText = `Priority: ${prio.toUpperCase()}`;
 
-            itemCard.appendChild(itemCheckbox);
-            itemCard.appendChild(itemTitle);
-            itemCard.appendChild(itemDueDate);
-            itemCard.appendChild(deleteButton);
-            itemCard.appendChild(dropdownButton);
+            itemPanel.appendChild(itemDescription);
+            itemPanel.appendChild(itemPriority);
+            itemDisplay.appendChild(itemCheckbox);
+            itemDisplay.appendChild(itemTitle);
+            itemDisplay.appendChild(itemDueDate);
+            itemDisplay.appendChild(deleteButton);
+            itemDisplay.appendChild(dropdownButton);
+            itemCard.appendChild(itemDisplay);
+            itemCard.appendChild(itemPanel);
             listItem.appendChild(itemCard);
             itemList.appendChild(listItem);
         });
@@ -117,7 +129,7 @@ export default function Controller() {
     });
 
     cancelProjectButton.addEventListener("click", (e) => {
-       projectDialog.close(); 
+        projectDialog.close(); 
     });
 
     deleteProjectButton.addEventListener("click", (e) => {
@@ -151,6 +163,9 @@ export default function Controller() {
             currentProject.removeItem(e.target.parentElement.dataset.index);
             updateScreen();
         }
+        if (e.target.classList.contains("dropdown-btn")) {
+            e.target.parentElement.nextSibling.classList.toggle("hide");
+        }
     });
 
     priorityInput.addEventListener("click", (e) => {
@@ -178,10 +193,10 @@ export default function Controller() {
         }
     });
 
-    generalProject.addItem(new TodoItem("Item1", "", "", 1));
-    generalProject.addItem(new TodoItem("Item2", "", "", 2));
-    generalProject.addItem(new TodoItem("Item3", "", "", 3));
-    generalProject.addItem(new TodoItem("Item4", "", "", 3));
+    generalProject.addItem(new TodoItem("Item1", "Hello", "", 1));
+    generalProject.addItem(new TodoItem("Item2", "What's up?", "", 2));
+    generalProject.addItem(new TodoItem("Item3", "Hey", "", 3));
+    generalProject.addItem(new TodoItem("Item4", "Xin chao", "", 3));
 
     projects[0].addItem(new TodoItem("Item1", "", "", 3));
 
