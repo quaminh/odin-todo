@@ -293,9 +293,19 @@ form .priority-btn.selected {
 #item-submit {
     font-size: 1.5rem;
     height: 30%;
+    border: none;
     border-radius: 10px;
     cursor: pointer;
     align-self: center;
+    background-color: white;
+    box-shadow: 0px 3px 5px rgba(24, 76, 78, .8);
+}
+#item-submit:hover {
+    background-color: aliceblue;
+}
+#item-submit:active {
+    box-shadow: none;
+    transform: translateY(3px);
 }
 
 /* PROJECT LIST STYLES */

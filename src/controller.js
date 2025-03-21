@@ -1,5 +1,6 @@
 import Project from "./project";
 import TodoItem from "./todo-item";
+import { format } from "date-fns";
 
 export default function Controller() {
     const generalProject = new Project("General");
@@ -40,6 +41,12 @@ export default function Controller() {
     const priorityInput = document.querySelector("#item-form .priority-btn-container");
     const priorityButtons = document.querySelectorAll(".priority-btn");
     let currentPriorityNew = "LOW";
+
+    const allInputs = document.querySelectorAll("input, textarea");
+
+    const resetInputs = () => {
+        allInputs.forEach((inp) => inp.value = "");
+    }
 
     const updateScreen = () => {
         projectList.innerText = "";
@@ -112,7 +119,7 @@ export default function Controller() {
             }
 
             itemTitle.innerText = item.title;
-            itemDueDate.innerText = item.dueDate;
+            itemDueDate.innerText = item.dueDate ? format(new Date(item.dueDate), "MMM d") : "";
             editButton.innerText = "//";
             deleteButton.innerText = "X";
             dropdownButton.innerText = "V";
@@ -142,6 +149,7 @@ export default function Controller() {
         if (projectNameInput.value) {
             projects.push(new Project(projectNameInput.value));
             currentProject = projects[projects.length - 1];
+            resetInputs();
             updateScreen();
             projectDialog.close();
         }
@@ -255,6 +263,7 @@ export default function Controller() {
             if (currentPriorityNew === "MED") prio = 2;
             if (currentPriorityNew === "HIGH") prio = 1;
             currentProject.addItem(new TodoItem(title, description, date, prio));
+            resetInputs();
             updateScreen();
         }
     });
