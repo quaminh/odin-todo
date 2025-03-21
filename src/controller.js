@@ -17,22 +17,35 @@ export default function Controller() {
     const deleteProjectButton = document.querySelector("#delete-project-btn");
 
     const newProjectButton = document.querySelector("#new-project-btn");
-    const projectDialog = document.querySelector("dialog");
+    const projectDialog = document.querySelector("#new-project-dialog");
     const projectNameInput = document.querySelector("#project-name-input");
     const createProjectButton = document.querySelector("#create-project-btn");
     const cancelProjectButton = document.querySelector("#cancel-project-btn");
+
+    const editItemDialog = document.querySelector("#edit-item-dialog");
+    const editItemTitle = document.querySelector("#edit-item-title");
+    const editItemDesc = document.querySelector("#edit-item-desc");
+    const editItemDate = document.querySelector("#edit-item-date");
+    const editPriorityInput = document.querySelector("#edit-item-dialog .prio-btn-container");
+    const editPriorityButtons = document.querySelectorAll(".edit-prio-btn");
+    const saveEditButton = document.querySelector("#save-edit-btn");
+    const cancelEditButton = document.querySelector("#cancel-edit-btn");
+    let editingItemIndex = 0;
+    let currentPriorityEdit = "LOW";
 
     const itemForm = document.querySelector("#item-form");
     const titleInput = document.querySelector("#title-input");
     const descriptionInput = document.querySelector("#desc-input");
     const dateInput = document.querySelector("#date-input");
-    const priorityInput = document.querySelector("div.priority-btn-container");
+    const priorityInput = document.querySelector("#item-form .priority-btn-container");
     const priorityButtons = document.querySelectorAll(".priority-btn");
-    let currentPriority = "LOW";
+    let currentPriorityNew = "LOW";
 
     const updateScreen = () => {
         projectList.innerText = "";
         itemList.innerText = "";
+
+        currentProject.sort();
 
         if (currentProject === generalProject) {
             generalProjectButton.classList.add("selected");
@@ -69,17 +82,21 @@ export default function Controller() {
             const itemDueDate = document.createElement("p");
             const itemCheckbox = document.createElement("input");
             const listItem = document.createElement("li");
+            const editButton = document.createElement("button");
             const deleteButton = document.createElement("button");
             const dropdownButton = document.createElement("button");
             const itemPanel = document.createElement("div");
             const itemDescription = document.createElement("p");
             const itemPriority = document.createElement("p");
 
+            itemCheckbox.type = "checkbox";
+
             itemCard.classList.add("item-card");
             itemDisplay.classList.add("item-display");
             itemPanel.classList.add("item-panel", "hide");
             itemCard.dataset.index = index;
             itemDueDate.classList.add("due-date");
+            editButton.classList.add("edit-btn");
             deleteButton.classList.add("delete-btn");
             dropdownButton.classList.add("dropdown-btn");
 
@@ -89,10 +106,14 @@ export default function Controller() {
             if (item.priority === 3) prio = "low";
             itemCard.classList.add(`${prio}-priority`);
 
-            itemCheckbox.type = "checkbox";
+            if (item.isCompleted()) {
+                itemCard.classList.add("completed");
+                itemCheckbox.checked = true;
+            }
 
             itemTitle.innerText = item.title;
             itemDueDate.innerText = item.dueDate;
+            editButton.innerText = "//";
             deleteButton.innerText = "X";
             dropdownButton.innerText = "V";
             itemDescription.innerText = (item.description) ? item.description : "No description";
@@ -103,6 +124,7 @@ export default function Controller() {
             itemDisplay.appendChild(itemCheckbox);
             itemDisplay.appendChild(itemTitle);
             itemDisplay.appendChild(itemDueDate);
+            itemDisplay.appendChild(editButton);
             itemDisplay.appendChild(deleteButton);
             itemDisplay.appendChild(dropdownButton);
             itemCard.appendChild(itemDisplay);
@@ -119,7 +141,7 @@ export default function Controller() {
     createProjectButton.addEventListener("click", (e) => {
         if (projectNameInput.value) {
             projects.push(new Project(projectNameInput.value));
-            currentProject = projects[projects.length-1];
+            currentProject = projects[projects.length - 1];
             updateScreen();
             projectDialog.close();
         }
@@ -129,7 +151,7 @@ export default function Controller() {
     });
 
     cancelProjectButton.addEventListener("click", (e) => {
-        projectDialog.close(); 
+        projectDialog.close();
     });
 
     deleteProjectButton.addEventListener("click", (e) => {
@@ -159,20 +181,64 @@ export default function Controller() {
     });
 
     itemList.addEventListener("click", (e) => {
+        const itemCard = e.target.parentElement.parentElement;
+        if (e.target.classList.contains("edit-btn")) {
+            editingItemIndex = itemCard.dataset.index;
+            const item = currentProject.list[editingItemIndex];
+            editItemTitle.value = item.title;
+            editItemDesc.value = item.description;
+            editItemDate.value = item.dueDate;
+            editPriorityButtons.forEach((btn) => btn.classList.remove("selected"));
+            editPriorityButtons[3-item.priority].classList.add("selected");
+            editItemDialog.showModal();
+        }
         if (e.target.classList.contains("delete-btn")) {
-            currentProject.removeItem(e.target.parentElement.dataset.index);
+            currentProject.removeItem(itemCard.dataset.index);
             updateScreen();
         }
         if (e.target.classList.contains("dropdown-btn")) {
             e.target.parentElement.nextSibling.classList.toggle("hide");
         }
+        if (e.target.type === "checkbox") {
+            currentProject.list[itemCard.dataset.index].toggleCompleted();
+            updateScreen();
+        }
+    });
+
+    editPriorityInput.addEventListener("click", (e) => {
+        if (e.target.classList.contains("edit-prio-btn")) {
+            editPriorityButtons.forEach((button) => button.classList.remove("selected"));
+            e.target.classList.add("selected");
+            currentPriorityEdit = e.target.innerText;
+        }
+    });
+
+    saveEditButton.addEventListener("click", (e) => {
+        if (editItemTitle.value) {
+            const item = currentProject.list[editingItemIndex];
+            item.title = editItemTitle.value;
+            item.description = editItemDesc.value;
+            item.dueDate = editItemDate.value;
+            if (currentPriorityEdit === "LOW") item.priority = 3;
+            if (currentPriorityEdit === "MED") item.priority = 2;
+            if (currentPriorityEdit === "HIGH") item.priority = 1;
+            updateScreen();
+            editItemDialog.close();
+        }
+        else {
+            alert("Title cannot be empty");
+        }
+    });
+
+    cancelEditButton.addEventListener("click", (e) => {
+        editItemDialog.close();
     });
 
     priorityInput.addEventListener("click", (e) => {
         if (e.target.classList.contains("priority-btn")) {
             priorityButtons.forEach((button) => button.classList.remove("selected"));
             e.target.classList.add("selected");
-            currentPriority = e.target.innerText;
+            currentPriorityNew = e.target.innerText;
         }
     });
 
@@ -186,8 +252,8 @@ export default function Controller() {
             const description = descriptionInput.value;
             const date = dateInput.value;
             let prio = 3;
-            if (currentPriority === "MED") prio = 2;
-            if (currentPriority === "HIGH") prio = 1;
+            if (currentPriorityNew === "MED") prio = 2;
+            if (currentPriorityNew === "HIGH") prio = 1;
             currentProject.addItem(new TodoItem(title, description, date, prio));
             updateScreen();
         }

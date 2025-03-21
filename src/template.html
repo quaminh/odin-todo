@@ -58,7 +58,7 @@
                 </form>
             </div>
         </div>
-        <dialog>
+        <dialog id="new-project-dialog">
             <div class="dialog-input-container">
                 <label for="project-name-input">Enter your project name</label>
                 <input id="project-name-input" type="text" placeholder="Project Name">
@@ -66,6 +66,33 @@
             <div class="dialog-button-container">
                 <button id="create-project-btn">Create</button>
                 <button id="cancel-project-btn">Cancel</button>
+            </div>
+        </dialog>
+        <dialog id="edit-item-dialog">
+            <div class="item-dialog-container">
+                <h2>Edit Todo Item</h2>
+                <div class="edit-item-container">
+                    <label for="edit-item-title">Title</label>
+                    <input id="edit-item-title" type="text" placeholder="Title">
+                </div>
+                <div class="edit-item-container">
+                    <label for="edit-item-desc">Description</label>
+                    <textarea id="edit-item-desc" placeholder="Description"></textarea>
+                </div>
+                <div class="edit-item-container">
+                    <label for="edit-item-date">Due Date</label>
+                    <input id="edit-item-date" type="date">
+                </div>
+                <label>Priority</label>
+                <div class="prio-btn-container">
+                    <button id="edit-prio-low" class="edit-prio-btn">LOW</button>
+                    <button id="edit-prio-med" class="edit-prio-btn">MED</button>
+                    <button id="edit-prio-high" class="edit-prio-btn">HIGH</button>
+                </div>
+                <div class="dialog-btn-container">
+                    <button id="save-edit-btn">Save</button>
+                    <button id="cancel-edit-btn">Cancel</button>
+                </div>
             </div>
         </dialog>
     </div>

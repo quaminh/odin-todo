@@ -2,6 +2,7 @@
     --high-priority-color: rgba(68, 0, 255, 1);
     --med-priority-color: rgba(68, 0, 255, .5);
     --low-priority-color: rgba(68, 0, 255, .2);
+    --completed-color: rgb(200, 200, 200);
 }
 
 html, body {
@@ -101,24 +102,23 @@ div#content {
 /* DIALOG STYLES */
 
 dialog {
-    border: none;
+    border: 2px solid darkcyan;
     border-radius: 10px;
     box-shadow: 5px 5px darkcyan;
 }
 
-dialog div {
+#new-project-dialog div {
     padding: 10px 25px;
 }
 
-dialog input {
+#new-project-dialog input {
     box-sizing: border-box;
     font-size: 1.5rem;
     padding: 5px;
-    border: 2px solid darkcyan;
     border-radius: 5px;
 }
 
-dialog button {
+#new-project-dialog button {
     padding: 10px 20px;
     font-size: 1.2rem;
     font-weight: bold;
@@ -127,12 +127,12 @@ dialog button {
     cursor: pointer;
 }
 
-.dialog-input-container {
+#new-project-dialog .dialog-input-container {
     display: flex;
     flex-direction: column;
 }
 
-.dialog-button-container {
+#new-project-dialog .dialog-button-container {
     display: flex;
     gap: 20px;
 }
@@ -149,6 +149,87 @@ dialog button {
     background-color: rgb(241, 241, 241);
 }
 #cancel-project-btn:hover {
+    background-color: lightgray;
+}
+
+#edit-item-dialog {
+    padding: 30px;
+}
+
+#edit-item-dialog .item-dialog-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#edit-item-dialog .edit-item-container {
+    display: flex;
+    flex-direction: column;
+}
+
+#edit-item-dialog textarea {
+    resize: none;
+    height: 5em;
+    border: 2px solid black;
+}
+
+#edit-item-dialog input, textarea {
+    font-size: 1.2rem;
+    padding: 5px;
+    width: 400px;
+    border: 2px solid black;
+    border-radius: 5px;
+}
+
+#edit-item-dialog .prio-btn-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+}
+
+#edit-item-dialog .edit-prio-btn {
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    background-color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+#edit-item-dialog .edit-prio-btn:hover {
+    background-color: rgba(0, 139, 139, 0.2);
+}
+#edit-item-dialog .edit-prio-btn.selected {
+    background-color: darkcyan;
+    color: white;
+}
+
+#edit-item-dialog .dialog-btn-container {
+    margin-top: 25px;
+    display: flex;
+    gap: 15px;
+}
+
+#save-edit-btn, #cancel-edit-btn {
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#save-edit-btn {
+    background-color: darkcyan;
+    color: white;
+}
+#save-edit-btn:hover {
+    background-color: rgb(0, 175, 175);
+}
+
+#cancel-edit-btn {
+    background-color: rgb(241, 241, 241);
+}
+#cancel-edit-btn:hover {
     background-color: lightgray;
 }
 
@@ -295,14 +376,16 @@ form .priority-btn.selected {
     border: 2px var(--low-priority-color) solid;
 }
 .completed {
-    border: 2px black solid;
+    border: 2px var(--completed-color) solid;
+    color: var(--completed-color);
+    text-decoration: line-through;
 }
 
 .due-date {
     margin-left: auto;
 }
 
-.delete-btn, .dropdown-btn {
+.edit-btn, .delete-btn, .dropdown-btn {
     font-size: 1.2rem;
     font-weight: bold;
     background: none;
@@ -318,7 +401,7 @@ form .priority-btn.selected {
     background-color: rgb(236, 178, 178);
 }
 
-.dropdown-btn:hover {
+.edit-btn:hover, .dropdown-btn:hover {
     background-color: aliceblue;
 }
 
