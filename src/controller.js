@@ -4,10 +4,7 @@ import { format } from "date-fns";
 
 export default function Controller() {
     const generalProject = new Project("General");
-    const projects = [
-        new Project("Project 1"),
-        new Project("Project 2"),
-        new Project("Project 3")];
+    const projects = [];
     let currentProject = generalProject;
 
     const generalProjectButton = document.querySelector("#general-project-btn");
@@ -44,9 +41,66 @@ export default function Controller() {
 
     const allInputs = document.querySelectorAll("input, textarea");
 
+    const populateStorage = () => {
+        const generalProjectList = [];
+        generalProject.list.forEach((item) => {
+            const itemObj = {
+                title: item.title,
+                description: item.description,
+                dueDate: item.dueDate,
+                priority: item.priority,
+                completed: item.isCompleted()
+            };
+            generalProjectList.push(itemObj);
+        });
+
+        const storageProjects = [];
+        projects.forEach((proj) => {
+            const projectObj = {
+                name: proj.name,
+                list: []
+            };
+            proj.list.forEach((item) => {
+                const itemObj = {
+                    title: item.title,
+                    description: item.description,
+                    dueDate: item.dueDate,
+                    priority: item.priority,
+                    completed: item.isCompleted()
+                };
+                projectObj.list.push(itemObj);
+            });
+            storageProjects.push(projectObj);
+        });
+
+        localStorage.setItem("generalProject", JSON.stringify(generalProjectList));
+        localStorage.setItem("projects", JSON.stringify(storageProjects));
+    };
+
+    const setProjects = () => {
+        const generalProjectList = JSON.parse(localStorage.getItem("generalProject"));
+        const projectsList = JSON.parse(localStorage.getItem("projects"));
+
+        generalProjectList.forEach((item) => {
+            const todo = new TodoItem(item.title, item.description, item.dueDate, item.priority);
+            if (item.completed) todo.toggleCompleted();
+            generalProject.addItem(todo);
+        });
+
+        projectsList.forEach((proj) => {
+            const project = new Project(proj.name);
+            proj.list.forEach((item) => {
+                const todo = new TodoItem(item.title, item.description, item.dueDate, item.priority);
+                if (item.completed) todo.toggleCompleted();
+                project.addItem(todo);
+            });
+            projects.push(project);
+        });
+    };
+
     const resetInputs = () => {
         allInputs.forEach((inp) => inp.value = "");
-    }
+    };
 
     const updateScreen = () => {
         projectList.innerText = "";
@@ -150,6 +204,7 @@ export default function Controller() {
             projects.push(new Project(projectNameInput.value));
             currentProject = projects[projects.length - 1];
             resetInputs();
+            populateStorage();
             updateScreen();
             projectDialog.close();
         }
@@ -166,6 +221,7 @@ export default function Controller() {
         if (currentProject !== generalProject) {
             projects.splice(projects.indexOf(currentProject), 1);
             currentProject = generalProject;
+            populateStorage();
             updateScreen();
         }
     });
@@ -176,15 +232,12 @@ export default function Controller() {
 
     generalProjectButton.addEventListener("click", (e) => {
         currentProject = generalProject;
-
         updateScreen();
     });
 
     projectList.addEventListener("click", (e) => {
         if (!e.target.classList.contains("project-btn")) return;
-
         currentProject = projects[e.target.dataset.index];
-
         updateScreen();
     });
 
@@ -202,6 +255,7 @@ export default function Controller() {
         }
         if (e.target.classList.contains("delete-btn")) {
             currentProject.removeItem(itemCard.dataset.index);
+            populateStorage();
             updateScreen();
         }
         if (e.target.classList.contains("dropdown-btn")) {
@@ -209,6 +263,7 @@ export default function Controller() {
         }
         if (e.target.type === "checkbox") {
             currentProject.list[itemCard.dataset.index].toggleCompleted();
+            populateStorage();
             updateScreen();
         }
     });
@@ -230,6 +285,7 @@ export default function Controller() {
             if (currentPriorityEdit === "LOW") item.priority = 3;
             if (currentPriorityEdit === "MED") item.priority = 2;
             if (currentPriorityEdit === "HIGH") item.priority = 1;
+            populateStorage();
             updateScreen();
             editItemDialog.close();
         }
@@ -264,23 +320,18 @@ export default function Controller() {
             if (currentPriorityNew === "HIGH") prio = 1;
             currentProject.addItem(new TodoItem(title, description, date, prio));
             resetInputs();
+            populateStorage();
             updateScreen();
         }
     });
 
-    generalProject.addItem(new TodoItem("Item1", "Hello", "", 1));
-    generalProject.addItem(new TodoItem("Item2", "What's up?", "", 2));
-    generalProject.addItem(new TodoItem("Item3", "Hey", "", 3));
-    generalProject.addItem(new TodoItem("Item4", "Xin chao", "", 3));
-
-    projects[0].addItem(new TodoItem("Item1", "", "", 3));
-
-    projects[1].addItem(new TodoItem("Item1", "", "", 3));
-    projects[1].addItem(new TodoItem("Item2", "", "", 3));
-
-    projects[2].addItem(new TodoItem("Item1", "", "", 3));
-    projects[2].addItem(new TodoItem("Item2", "", "", 3));
-    projects[2].addItem(new TodoItem("Item3", "", "", 3));
+    if (!localStorage.getItem("generalProject") ||
+        !localStorage.getItem("projects")) {
+            populateStorage();
+    }
+    else {
+        setProjects();
+    }
 
     updateScreen();
 }
